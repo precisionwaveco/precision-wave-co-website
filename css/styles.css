@@ -192,11 +192,15 @@ a {
 .hamburger {
   display: none;
   flex-direction: column;
+  justify-content: center;
   gap: 5px;
+  width: 44px;
+  height: 44px;
   background: none;
   border: none;
   cursor: pointer;
   padding: 5px;
+  z-index: 1002;
 }
 
 .hamburger span {
@@ -205,6 +209,22 @@ a {
   background: white;
   border-radius: 2px;
   transition: var(--transition);
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.nav-overlay {
+  display: none;
 }
 
 /* Hero */
@@ -728,21 +748,55 @@ a {
 
   .nav {
     position: fixed;
-    top: 70px;
+    top: 85px;
     left: 0;
     right: 0;
+    z-index: 1001;
     background: var(--blue-deep);
     flex-direction: column;
-    padding: 24px;
-    gap: 18px;
-    transform: translateY(-120%);
+    align-items: stretch;
+    padding: 8px 24px 24px;
+    gap: 0;
+    max-height: calc(100vh - 85px);
+    overflow-y: auto;
+    box-shadow: 0 16px 30px rgba(0,0,0,0.35);
+    transform: translateY(-12px);
     opacity: 0;
     pointer-events: none;
-    transition: var(--transition);
+    transition: transform 0.25s ease, opacity 0.2s ease;
   }
 
   .nav.open {
     transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav a {
+    padding: 16px 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 1.05rem;
+  }
+
+  .nav a.btn-nav {
+    margin-top: 16px;
+    border-bottom: none;
+    text-align: center;
+  }
+
+  .nav-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    top: 85px;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .nav-overlay.open {
     opacity: 1;
     pointer-events: auto;
   }

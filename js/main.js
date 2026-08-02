@@ -1,19 +1,52 @@
 // Mobile menu toggle
 const hamburger = document.getElementById('hamburger');
 const nav = document.getElementById('nav');
+const navOverlay = document.getElementById('nav-overlay');
 
 if (hamburger && nav) {
+  const openMenu = () => {
+    nav.classList.add('open');
+    hamburger.classList.add('active');
+    hamburger.setAttribute('aria-expanded', 'true');
+    hamburger.setAttribute('aria-label', 'Close menu');
+    navOverlay?.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeMenu = () => {
+    nav.classList.remove('open');
+    hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Open menu');
+    navOverlay?.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
   hamburger.addEventListener('click', () => {
-    nav.classList.toggle('open');
-    hamburger.classList.toggle('active');
+    nav.classList.contains('open') ? closeMenu() : openMenu();
   });
 
   // Close menu when a link is clicked
   nav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      nav.classList.remove('open');
-      hamburger.classList.remove('active');
-    });
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Close menu when the backdrop is clicked
+  navOverlay?.addEventListener('click', closeMenu);
+
+  // Close menu on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('open')) {
+      closeMenu();
+      hamburger.focus();
+    }
+  });
+
+  // Close menu if resized back to desktop layout
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && nav.classList.contains('open')) {
+      closeMenu();
+    }
   });
 }
 
